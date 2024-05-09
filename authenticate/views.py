@@ -33,6 +33,7 @@ def register(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
+        termes_acceptes = request.POST.get('termes_accept') 
        
         
         if type_client == 'particulier':
@@ -42,22 +43,30 @@ def register(request):
             
             if password != password_confirm:
                 messages.error(request, 'Passwords do not match.')
-                return redirect(reverse('login') + f'?type={type_client}')
+                return redirect(reverse('registerP') + f'?type={type_client}')
+            # Convertir la valeur en booléen
+            termes_acceptes = bool(termes_acceptes)
+
+            # Vérifier si les termes ont été acceptés
+            if not termes_acceptes:
+                messages.error(request, 'Veuillez accepter les termes et conditions.')
+                return redirect(reverse('registerP') + f'?type={type_client}')
             
             try:
                 if User.objects.filter(username=username).exists():
                     messages.error(request, 'Username is taken.')
-                    return redirect(reverse('login') + f'?type={type_client}')
+                    return redirect(reverse('registerP') + f'?type={type_client}')
+                
                 if User.objects.filter(email=email).exists():
                     messages.error(request, 'Email is taken.')
-                    return redirect(reverse('login') + f'?type={type_client}')
+                    return redirect(reverse('registerP') + f'?type={type_client}')
                 
                 user = User.objects.create_user(username=username, email=email, password=password, first_name=first_name)
                 user.save()
                 
                 auth_token = str(uuid.uuid4())
                 profile_obj = Profile.objects.create(
-                    # termes_accept =termes_accept,
+                    termes_accept =termes_acceptes,
                     user=user,
                     auth_token=auth_token
                 )
@@ -72,32 +81,40 @@ def register(request):
                 messages.error(request, 'An error occurred.')
                 
         elif type_client == 'entreprise':
-            username = request.POST.get('username')
             email = request.POST.get('email')
             first_name = request.POST.get('first_name')  
             addresse = request.POST.get('addresse')
             phone = request.POST.get('phone')  
-            password = request.POST.get('password')
             password_confirm = request.POST.get('password_confirm')
+
+            # Convertir la valeur en booléen
+            termes_acceptes = bool(termes_acceptes)
+
+                # Vérifier si les termes ont été acceptés
+            if not termes_acceptes:
+                messages.error(request, 'Veuillez accepter les termes et conditions.')
+                return redirect(reverse('registerP') + f'?type={type_client}')
             
             if password != password_confirm:
-                messages.error(request, 'Passwords do not match.')
-                return redirect(reverse('register') + f'?type={type_client}')
+                messages.error(request, 'Les mots de passe ne correspondent pas!.')
+                return redirect(reverse('registerP') + f'?type={type_client}')
+            
             
             try:
                 if User.objects.filter(username=username).exists():
-                    messages.error(request, 'Nom d\'entreprise is taken.')
-                    return redirect(reverse('login') + f'?type={type_client}')
+                    messages.error(request, 'Nom d\'entreprise déjà pris.')
+                    return redirect(reverse('registerP') + f'?type={type_client}')
+                
                 if User.objects.filter(email=email).exists():
-                    messages.error(request, 'Email is taken.')
-                    return redirect(reverse('register') + f'?type={type_client}')
+                    messages.error(request, 'Email déjà pris.')
+                    return redirect(reverse('registerP') + f'?type={type_client}')
                 
                 user = User.objects.create_user(username=username, email=email, password=password, first_name=first_name)  
                 user.save()
                 
                 auth_token = str(uuid.uuid4())
                 profile_obj = Profile.objects.create(
-                    # termes_accept = termes_accept,
+                    termes_accept = termes_acceptes,
                     phone = phone,
                     addresse = addresse,
                     user=user,
@@ -109,11 +126,12 @@ def register(request):
                 return redirect('/token')
             except Exception as e:
                 print(e)
-                messages.error(request, 'An error occurred.')
+                messages.error(request, 'Une erreur s\'esr produite. Veuillez réessayez plus tard!')
 
                 
     context = {'type_client': type_client}
     return render(request, 'register.html', context)
+
 
 
 

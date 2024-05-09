@@ -16,7 +16,7 @@ class type_client(models.Model):
 
 class Profile(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    # termes_accept = models.BooleanField(default=False)
+    termes_accept = models.BooleanField(default=False)
     phone = models.CharField(max_length=20, blank=True, null=True)
     auth_token = models.CharField(max_length=100)
     is_verified = models.BooleanField(default=False)

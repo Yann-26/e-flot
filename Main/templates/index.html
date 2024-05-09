@@ -56,7 +56,7 @@
             <nav class="main-nav">
               <!-- ***** Logo Start ***** -->
               <a href="{% url 'home' %}" class="logo">
-                 <img src="{% static 'assets/images/ee copie 3.png' %}" alt="Logo E_FLOT" style="width: 200px; height: auto;">
+                 <img src="{% static 'assets/images/ee copie 2.png' %}" alt="Logo E_FLOT" style="width: 200px; height: auto;">
 
               </a>
               <!-- ***** Logo End ***** -->
@@ -79,7 +79,7 @@
                   <a href="">
                     <form action="{% url 'signout' %}" method="post">
                       {% csrf_token %}
-                      <button class="btn btn-primary" type="submit">Deconnexion</button>
+                      <button class="btn btn-danger" type="submit">Deconnexion</button>
                     </form>
                   </li>
                 </a>
@@ -121,7 +121,7 @@
                     <h2>Consultez votre tableau de bord</h2>
                     <div class="buttons">
                     <div class="main-button">
-                      <a href="">
+                      <a href="{% url 'dashboard' %}">
                         <label for="dashbord"
                           >Tableau de bord</label>
                       </a>

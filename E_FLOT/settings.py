@@ -40,10 +40,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'Main.apps.MainConfig',
     'authenticate.apps.AuthenticateConfig',
+    'admin_dashboard.apps.AdminDashboardConfig',
 
     'crispy_forms',
     'crispy_bootstrap5',
 ]
+
 
 CRISPY_TEMPLATE_PACK = 'bootstrap5'
 
@@ -141,16 +143,4 @@ EMAIL_HOST_USER ='etudiant.2604@gmail.com'
 EMAIL_HOST_PASSWORD = 'yhbejtayaeaowdld'
 FROM_EMAIL = 'yannassiri26@gmail.com' 
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-        },
-    },
-    'root': {
-        'handlers': ['console'],
-        'level': 'DEBUG',
-    },
-}
+

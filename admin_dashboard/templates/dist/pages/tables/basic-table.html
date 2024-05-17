@@ -21,154 +21,116 @@
                 <div class="card">
                   <div class="card-body">
                     <h4 class="card-title">Ajout de vehicule</h4>
-                  <form method="post" class="forms-sample">
-                    {% csrf_token %}
-                    
-                    <!-- Champ pour sélectionner la marque -->
-                    <div class="form-group row">
-                      <label for="marque_voiture" class="col-sm-3 col-form-label">Marque</label>
-                      <div class="col-sm-9">
-                         <select class="form-control" name="marque_voiture" id="marque_voiture_select" onchange="changeModeleList()">
-                          <option value="" >Sélectionner une marque</option>
-                          {% for marque in marque_voitures %}
-                          <option value="{{ marque.id }}">{{ marque }}</option>
-                          {% endfor %}
-                        </select>              
-                      </div>
-                      <button type="button" class="btn btn-success"  data-toggle="modal" data-target="#exampleModalCenter">
-                         Ajouter une nouvelle marque
-                       </button>
-                    </div>
-                    <!-- Modal formulaire d'ajout de nouvelle marque -->
-                  <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
-                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                          </button>
-                        </div>
-                        <div class="modal-body">
-                          ...
-                        </div>
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                          <button type="button" class="btn btn-primary">Save changes</button>
-                        </div>
-                      </div>
+                 <form method="post" enctype="multipart/form-data" class="forms-sample">
+                  {% csrf_token %}
+                  <div class="form-group row">
+                    <label for="marque_voiture" class="col-sm-3 col-form-label">Marque</label>
+                    <div class="col-sm-9">
+                      <select class="form-control" name="marque_voiture" id="marque_voiture_select" onchange="changeModeleList()">
+                        <option value="">Sélectionner une marque</option>
+                        {% for marque in marque_voitures %}
+                          <option value="{{ marque.id }}">{{ marque.marque }}</option>
+                        {% endfor %}
+                      </select>              
                     </div>
                   </div>
-
-                    <!-- Champ pour sélectionner le modèle -->
-                    <div class="form-group row">
-                      <label for="modele" class="col-sm-3 col-form-label">Modèle</label>
-                      <div class="col-sm-9">
-                        <select class="form-control" name="modele" id="modele_select">
-                          <option value="">Sélectionner le modèle</option>                        
-                            <option value=""></option>
-                          <option value="autre">Autre</option>
-                        </select>
-                      </div>
+                  <div class="form-group row">
+                    <label for="modele" class="col-sm-3 col-form-label">Modèle</label>
+                    <div class="col-sm-9">
+                      <select class="form-control" name="modele" id="modele_select">
+                        <option value="">Sélectionner le modèle</option>
+                        {% for modele in modeles %}
+                          <option value="{{ modele.id }}">{{ modele.nom }}</option>
+                        {% endfor %}
+                        <option value="autre">Autre</option>
+                      </select>
                     </div>
-
-                    <div class="form-group row">
+                  </div>
+                  <!-- Autres champs du formulaire -->
+                  <div class="form-group row">
+                    <label for="couleur_voiture" class="col-sm-3 col-form-label">Couleur</label>
+                    <div class="col-sm-9">
+                      <input type="text" class="form-control" name="couleur_voiture" id="couleur_voiture" placeholder="Couleur de la voiture" />
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="annee_fabrication" class="col-sm-3 col-form-label">Année de fabrication</label>
+                    <div class="col-sm-9">
+                      <input type="date" class="form-control" name="annee_fabrication" id="annee_fabrication" placeholder="Année de fabrication" />
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="kilometrage" class="col-sm-3 col-form-label">Kilométrage</label>
+                    <div class="col-sm-9">
+                      <input type="number" class="form-control" name="kilometrage" id="kilometrage" placeholder="Kilométrage" />
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="type_carburant" class="col-sm-3 col-form-label">Type de carburant</label>
+                    <div class="col-sm-9">                       
+                      <select class="form-control" name="type_carburant" id="type_carburant">
+                        <option value="Gasoil">Gasoil</option>
+                        <option value="Super">Super</option>
+                        <option value="Essence">Essence</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="transmission" class="col-sm-3 col-form-label">Transmission</label>
+                    <div class="col-sm-9">
+                      <select class="form-control" name="transmission" id="transmission">
+                        <option value="Manuelle">Manuelle</option>
+                        <option value="Automatique">Automatique</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="numero_serie" class="col-sm-3 col-form-label">Numéro de série</label>
+                    <div class="col-sm-9">
+                      <input type="text" class="form-control" name="numero_serie" id="numero_serie" placeholder="Numéro de série" />
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="numero_chassi" class="col-sm-3 col-form-label">Numéro de châssis</label>
+                    <div class="col-sm-9">
+                      <input type="text" class="form-control" name="numero_chassi" id="numero_chassi" placeholder="Numéro de châssis" />
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="immatriculation" class="col-sm-3 col-form-label">Numéro Matricule</label>
+                    <div class="col-sm-9">
+                      <input type="text" class="form-control" name="immatriculation" id="immatriculation" placeholder="Immatriculation" />
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="symptomes" class="col-sm-3 col-form-label">Symptômes</label>
+                    <div class="col-sm-9">
+                      <textarea class="form-control" name="symptomes" id="symptomes" placeholder="Symptômes"></textarea>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="historique_maintenance" class="col-sm-3 col-form-label">Historique de maintenance</label>
+                    <div class="col-sm-9">
+                      <textarea class="form-control" name="historique_maintenance" id="historique_maintenance" placeholder="Historique de maintenance"></textarea>
+                    </div>
+                  </div>
+                  <div class="form-group row">
                     <label for="nombre_de_vitesse" class="col-sm-3 col-form-label">Nombre de vitesses</label>
                     <div class="col-sm-9">
                       <input type="range" class="form-range" name="nombre_de_vitesse" id="nombre_de_vitesse" min="1" max="10" value="5">
                       <output for="nombre_de_vitesse" id="vitesse_value"></output>
                     </div>
                   </div>
-                    <div class="form-group row">
-                      <label for="couleur_voiture" class="col-sm-3 col-form-label">Couleur</label>
-                      <div class="col-sm-9">
-                        <input type="text" class="form-control" name="couleur_voiture" id="couleur_voiture" placeholder="Couleur de la voiture" />
-                      </div>
+                  <div class="form-group row">
+                    <label for="photo_voiture" class="col-sm-3 col-form-label">Photo de la voiture</label>
+                    <div class="col-sm-9">
+                      <input type="file" class="form-control" name="photo_voiture" accept=".jpg, .jpeg, .png" id="file-upload" placeholder="Photo de la voiture" />
                     </div>
+                  </div>
+                  <button type="submit" class="btn btn-gradient-primary me-2">Submit</button>
+                  <a href="#" class="btn btn-light">Cancel</a>
+                </form>
 
-                    <!-- Autres champs du formulaire -->
-                    <div class="form-group row">
-                      <label for="annee_fabrication" class="col-sm-3 col-form-label">Année de fabrication</label>
-                      <div class="col-sm-9">
-                        <input type="date" class="form-control" name="annee_fabrication" id="annee_fabrication" placeholder="Année de fabrication" />
-                      </div>
-                    </div>
-                    <div class="form-group row">
-                      <label for="kilometrage" class="col-sm-3 col-form-label">Kilométrage</label>
-                      <div class="col-sm-9">
-                        <input type="number" class="form-control" name="kilometrage" id="kilometrage" placeholder="Kilométrage" />
-                      </div>
-                    </div>
-                    <div class="form-group row">
-                      <label for="type_carburant" class="col-sm-3 col-form-label">Type de carburant</label>
-                      <div class="col-sm-9">                       
-                        <select class="form-control" name="type_carburant" id="type_carburant">
-                          <option value="Gasoil">Gasoil</option>
-                          <option value="Super">Super</option>
-                          <option value="Essence">Essence</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div class="form-group row">
-                      <label for="transmission" class="col-sm-3 col-form-label">Transmission</label>
-                      <div class="col-sm-9">
-                        <select class="form-control" name="transmission" id="transmission">
-                          <option value="Manuelle">Manuelle</option>
-                          <option value="Automatique">Automatique</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div class="form-group row">
-                      <label for="numero_serie" class="col-sm-3 col-form-label">Numéro de série</label>
-                      <div class="col-sm-9">
-                        <input type="text" class="form-control" name="numero_serie" id="numero_serie" placeholder="Numéro de série" />
-                      </div>
-                    </div>
-                     <div class="form-group row">
-                      <label for="numero_serie" class="col-sm-3 col-form-label">Numéro Matricule</label>
-                      <div class="col-sm-9">
-                        <input type="text" class="form-control" name="immatriculation" id="immatriculation" placeholder="Immatriculation" />
-                      </div>
-                    </div>
-                    <div class="form-group row">
-                      <label for="symptomes" class="col-sm-3 col-form-label">Symptômes</label>
-                      <div class="col-sm-9">
-                        <textarea class="form-control" name="symptomes" id="symptomes" placeholder="Symptômes"></textarea>
-                      </div>
-                    </div>
-                    <div class="form-group row">
-                      <label for="historique_maintenance" class="col-sm-3 col-form-label">Historique de maintenance</label>
-                      <div class="col-sm-9">
-                        <textarea class="form-control" name="historique_maintenance" id="historique_maintenance" placeholder="Historique de maintenance"></textarea>
-                      </div>
-                    </div>
-                    <div class="form-group row">
-                      <label for="codes_erreur" class="col-sm-3 col-form-label">Codes d'erreur</label>
-                      <div class="col-sm-9">
-                        <textarea class="form-control" name="codes_erreur" id="codes_erreur" placeholder="Codes d'erreur"></textarea>
-                      </div>
-                    </div>
-
-                    <!-- Champ pour la photo de la voiture -->
-                    <div class="form-group row">
-                      <label for="photo_voiture" class="col-sm-3 col-form-label">Photo de la voiture</label>
-                      <div class="col-sm-9">
-                        <input type="file" class="form-control" name="photo_voiture" accept=".jpg, .jpeg, .png" id="file-upload" placeholder="Photo de la voiture" />
-                      </div>
-                    </div>
-
-                    <!-- Checkbox "Remember me" -->
-                    <div class="form-check form-check-flat form-check-primary">
-                      <label class="form-check-label">
-                        <input type="checkbox" class="form-check-input" />
-                        Remember me
-                      </label>
-                    </div>
-                    
-                    <!-- Boutons de soumission et d'annulation -->
-                    <button type="submit" class="btn btn-gradient-primary me-2">Submit</button>
-                    <a href="#" class="btn btn-light">Cancel</a>
-                  </form>
                   </div>
                 </div>
               </div>
@@ -226,20 +188,8 @@
     <!-- Plugin js for this page -->
     <!-- End plugin js for this page -->
     <!-- inject:js -->
-    <script>
-      document
-        .getElementById("marque_voiture_select")
-        .addEventListener("change", function () {
-          var select = document.getElementById("marque_voiture_select");
-          var nouvelleMarqueInput = document.getElementById("nouvelle_marque");
 
-          if (select.value === "autre") {
-            nouvelleMarqueInput.style.display = "block";
-          } else {
-            nouvelleMarqueInput.style.display = "none";
-          }
-        });
-    </script>
+
     <script>
       // Sélectionnez l'élément d'entrée de type fichier et l'élément image
       const fileUpload = document.getElementById("file-upload");
@@ -261,6 +211,9 @@
       });
     </script>
 
+
+
+
 <script>
   //  JS pour nombre de vitesse 
   document.addEventListener("DOMContentLoaded", function() {
@@ -272,6 +225,9 @@
     });
   });
 </script>
+
+
+
 
 
 <script>
@@ -298,45 +254,6 @@ function changeModeleList() {
   }
 }
 </script>
-
-<!-- afficher/ masquer des champs  -->
-    <script>
-  
-  // Event listener pour filtrer les modèles lorsqu'une marque est sélectionnée
-  document.getElementById("marque_voiture_select").addEventListener("change", filterModelsByBrand);
-
-  // Fonction pour afficher/cacher le champ pour ajouter une nouvelle marque
-  function toggleNewBrandInput() {
-    var select = document.getElementById("marque_voiture_select");
-    var input = document.getElementById("nouvelle_marque");
-    if (select.value === "autre") {
-      input.style.display = "block";
-    } else {
-      input.style.display = "none";
-      input.value = "";
-    }
-  }
-
-  // Event listener pour afficher/cacher le champ pour ajouter une nouvelle marque
-  document.getElementById("marque_voiture_select").addEventListener("change", toggleNewBrandInput);
-
-  // Fonction pour afficher/cacher le champ pour ajouter un nouveau modèle
-  function toggleNewModelInput() {
-    var select = document.getElementById("modele_select");
-    var input = document.getElementById("nouveau_modele");
-    if (select.value === "autre") {
-      input.style.display = "block";
-    } else {
-      input.style.display = "none";
-      input.value = "";
-    }
-  }
-
-  // Event listener pour afficher/cacher le champ pour ajouter un nouveau modèle
-  document.getElementById("modele_select").addEventListener("change", toggleNewModelInput);
-</script>
-
-
     <script src="{% static 'assets/js/off-canvas.js' %}"></script>
     <script src="{% static 'assets/js/misc.js' %}"></script>
     <script src="{% static 'assets/js/settings.js' %}"></script>

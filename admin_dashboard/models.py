@@ -31,11 +31,12 @@ class Voiture(models.Model):
         ("Essence", "Essence"),
     ]
     nombre_de_vitesse = models.IntegerField(default=5, validators=[MinValueValidator(1), MaxValueValidator(10)])
-    annee_fabrication = models.PositiveIntegerField()
+    annee_fabrication = models.DateField()
     kilometrage = models.PositiveIntegerField()
     type_carburant = models.CharField(choices=TYPES_CARBURANT_CHOICES,max_length=50)
     transmission = models.CharField(max_length=50, choices=TRANSMISSION_CHOICES)
     numero_serie = models.CharField(max_length=100)
+    immatriculation = models.CharField(max_length=20)
     symptomes = models.TextField()
     couleur_voiture = models.CharField(max_length=50)
     historique_maintenance = models.TextField()

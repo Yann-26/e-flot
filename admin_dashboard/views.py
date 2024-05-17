@@ -20,59 +20,41 @@ def new_voiture(request):
     marque_voitures = MarqueVoiture.objects.all()
     modeles = Modele.objects.all()
 
-    # recuperation de la marque
-    # créer d'un dictionnaire
-    # tri des modeles selon la marque sélectionnée 
     modeles_data = {}
     for modele in modeles:
         if modele.marque_id not in modeles_data:
             modeles_data[modele.marque_id] = []
         modeles_data[modele.marque_id].append({'id': modele.id, 'nom': modele.nom})
 
-    
     if request.method == "POST":
-        marque_voiture = request.POST.get("marque_voiture")
-        modele_voiture = request.POST.get("modele_voiture")
+        marque_voiture_id = request.POST.get("marque_voiture")
+        modele_voiture_id = request.POST.get("modele")
         immatriculation = request.POST.get("immatriculation")
         numero_serie = request.POST.get("numero_serie")
         couleur_voiture = request.POST.get("couleur_voiture")
         photo_voiture = request.FILES.get("photo_voiture")
-        annee_fabrication=request.POST.get("annee_fabrication"),
-        kilometrage=request.POST.get("kilometrage"),
-        type_carburant=request.POST.get("type_carburant"),
-        transmission=request.POST.get("transmission"),
-        symptomes=request.POST.get("symptomes"),
-        historique_maintenance=request.POST.get("historique_maintenance"),
-        codes_erreur=request.POST.get("codes_erreur"),
-        numero_chassi = request.POST.get('nemero_chassi'),
-        nombre_de_vitesse = request.POST.get('nombre_de_vitesse')
-        
-        if marque_voiture == "autre":
-            nouvelle_marque = request.POST.get("nouvelle_marque")
-            if nouvelle_marque:
-                try:
-                    marque_voiture_obj = MarqueVoiture.objects.get(marque=nouvelle_marque)
-                except MarqueVoiture.DoesNotExist:
-                    marque_voiture_obj = MarqueVoiture.objects.create(marque=nouvelle_marque)
-                else:
-                    messages.error(request, f'La marque {nouvelle_marque} existe déjà.')
-                    return redirect('/')
-        else:
-            marque_voiture_obj = MarqueVoiture.objects.get(marque=marque_voiture)
+        annee_fabrication = request.POST.get("annee_fabrication")
+        kilometrage = request.POST.get("kilometrage")
+        type_carburant = request.POST.get("type_carburant")
+        transmission = request.POST.get("transmission")
+        symptomes = request.POST.get("symptomes")
+        historique_maintenance = request.POST.get("historique_maintenance")
+        codes_erreur = request.POST.get("codes_erreur")
+        numero_chassi = request.POST.get("numero_chassi")
+        nombre_de_vitesse = request.POST.get("nombre_de_vitesse")
 
-        if modele_voiture == "autre":
-            nouveau_modele = request.POST.get("nouveau_modele")
-            if nouveau_modele:
-                try:
-                    modele_voiture_obj = Modele.objects.get(nom=nouveau_modele)
-                except Modele.DoesNotExist:
-                    modele_voiture_obj = Modele.objects.create(nom=nouveau_modele, marque=marque_voiture_obj)
-                else:
-                    messages.error(request, f'Le modèle {nouveau_modele} existe déjà.')
-                    return redirect('/')
-        else:
-            modele_voiture_obj = Modele.objects.get(pk=modele_voiture)
-        
+        try:
+            marque_voiture_obj = MarqueVoiture.objects.get(pk=marque_voiture_id)
+        except MarqueVoiture.DoesNotExist:
+            messages.error(request, "La marque sélectionnée n'existe pas.")
+            return redirect('/Tableau/de/board/ajout/vehicule/')
+
+        try:
+            modele_voiture_obj = Modele.objects.get(pk=modele_voiture_id)
+        except Modele.DoesNotExist:
+            messages.error(request, "Le modèle sélectionné n'existe pas.")
+            return redirect('/Tableau/de/board/ajout/vehicule/')
+
         add_voiture = Voiture(
             modele=modele_voiture_obj,
             annee_fabrication=annee_fabrication,
@@ -95,14 +77,12 @@ def new_voiture(request):
         add_voiture.save()
         messages.success(request, f'Voiture {add_voiture.modele} a été bien ajoutée!')
         return redirect('/')
-    
+
     datas = {
         'marque_voitures': marque_voitures,
         'modeles': modeles,
-        'modeles_data': json.dumps(modeles_data), # exportation du dictionnaire en json 
+        'modeles_data': json.dumps(modeles_data),
     }
     return render(request, 'dist/pages/tables/basic-table.html', datas)
-
-
 
 

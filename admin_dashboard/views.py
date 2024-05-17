@@ -19,7 +19,15 @@ def dashboard_user(request):
 def new_voiture(request):
     marque_voitures = MarqueVoiture.objects.all()
     modeles = Modele.objects.all()
+
+    # recuperation de la marque
+    # créer d'un dictionnaire
+    # tri des modeles selon la marque sélectionnée 
     modeles_data = {}
+    for modele in modeles:
+        if modele.marque_id not in modeles_data:
+            modeles_data[modele.marque_id] = []
+        modeles_data[modele.marque_id].append({'id': modele.id, 'nom': modele.nom})
 
     
     if request.method == "POST":
@@ -37,6 +45,7 @@ def new_voiture(request):
         historique_maintenance=request.POST.get("historique_maintenance"),
         codes_erreur=request.POST.get("codes_erreur"),
         numero_chassi = request.POST.get('nemero_chassi'),
+        nombre_de_vitesse = request.POST.get('nombre_de_vitesse')
         
         if marque_voiture == "autre":
             nouvelle_marque = request.POST.get("nouvelle_marque")
@@ -77,6 +86,7 @@ def new_voiture(request):
             historique_maintenance=historique_maintenance,
             codes_erreur=codes_erreur,
             numero_chassi=numero_chassi,
+            nombre_de_vitesse=nombre_de_vitesse,
         )
 
         if photo_voiture:
@@ -89,7 +99,7 @@ def new_voiture(request):
     datas = {
         'marque_voitures': marque_voitures,
         'modeles': modeles,
-        'modeles_data': json.dumps(modeles_data),
+        'modeles_data': json.dumps(modeles_data), # exportation du dictionnaire en json 
     }
     return render(request, 'dist/pages/tables/basic-table.html', datas)
 

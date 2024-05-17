@@ -1,6 +1,7 @@
 {% extends 'dist/base.html' %}
 {% load static %}
  {% block content %}
+ 
         <!-- partial -->
         <div class="main-panel">
           <div class="content-wrapper">
@@ -27,35 +28,57 @@
                     <div class="form-group row">
                       <label for="marque_voiture" class="col-sm-3 col-form-label">Marque</label>
                       <div class="col-sm-9">
-                        <select class="form-control" name="marque_voiture" id="marque_voiture_select">
-                          <option value="">Sélectionner une marque</option>
-                          {% for choix in marque_voitures %}
-                          <option value="{{ choix.id }}">{{ choix }}</option>
+                         <select class="form-control" name="marque_voiture" id="marque_voiture_select" onchange="changeModeleList()">
+                          <option value="" >Sélectionner une marque</option>
+                          {% for marque in marque_voitures %}
+                          <option value="{{ marque.id }}">{{ marque }}</option>
                           {% endfor %}
-                          <option value="autre">Autre</option>
-                        </select>
-
-                        <!-- Champ pour ajouter une nouvelle marque (affiché si "Autre" est sélectionné) -->
-                        <input type="text" class="form-control" name="nouvelle_marque" id="nouvelle_marque" placeholder="Nouvelle marque" style="display: none;" />
+                        </select>              
+                      </div>
+                      <button type="button" class="btn btn-success"  data-toggle="modal" data-target="#exampleModalCenter">
+                         Ajouter une nouvelle marque
+                       </button>
+                    </div>
+                    <!-- Modal formulaire d'ajout de nouvelle marque -->
+                  <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          ...
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                          <button type="button" class="btn btn-primary">Save changes</button>
+                        </div>
                       </div>
                     </div>
+                  </div>
 
                     <!-- Champ pour sélectionner le modèle -->
                     <div class="form-group row">
                       <label for="modele" class="col-sm-3 col-form-label">Modèle</label>
                       <div class="col-sm-9">
                         <select class="form-control" name="modele" id="modele_select">
-                          <option value="">Sélectionner le modèle</option>
-                          {% for modele in modeles %}
-                            <option value="{{ modele.id }}">{{ modele.nom }}</option>
-                          {% endfor %}
+                          <option value="">Sélectionner le modèle</option>                        
+                            <option value=""></option>
                           <option value="autre">Autre</option>
                         </select>
-                        <!-- Champ pour ajouter un nouveau modèle (affiché si "Autre" est sélectionné) -->
-                        <input type="text" class="form-control" name="nouveau_modele" id="nouveau_modele" placeholder="Nouveau modèle" style="display: none;" />
                       </div>
                     </div>
 
+                    <div class="form-group row">
+                    <label for="nombre_de_vitesse" class="col-sm-3 col-form-label">Nombre de vitesses</label>
+                    <div class="col-sm-9">
+                      <input type="range" class="form-range" name="nombre_de_vitesse" id="nombre_de_vitesse" min="1" max="10" value="5">
+                      <output for="nombre_de_vitesse" id="vitesse_value"></output>
+                    </div>
+                  </div>
                     <div class="form-group row">
                       <label for="couleur_voiture" class="col-sm-3 col-form-label">Couleur</label>
                       <div class="col-sm-9">
@@ -67,7 +90,7 @@
                     <div class="form-group row">
                       <label for="annee_fabrication" class="col-sm-3 col-form-label">Année de fabrication</label>
                       <div class="col-sm-9">
-                        <input type="number" class="form-control" name="annee_fabrication" id="annee_fabrication" placeholder="Année de fabrication" />
+                        <input type="date" class="form-control" name="annee_fabrication" id="annee_fabrication" placeholder="Année de fabrication" />
                       </div>
                     </div>
                     <div class="form-group row">
@@ -238,26 +261,47 @@
       });
     </script>
 
-    <script>
-  // Fonction pour filtrer les modèles en fonction de la marque sélectionnée
-  function filterModelsByBrand() {
-    var selectedBrandId = document.getElementById("marque_voiture_select").value;
-    if (selectedBrandId !== "") {
-      fetch('/get_models/' + selectedBrandId)
-        .then(response => response.json())
-        .then(data => {
-          var select = document.getElementById("modele_select");
-          select.innerHTML = ""; // clear existing options
-          data.forEach(function(item) {
-            var option = document.createElement("option");
-            option.value = item.id;
-            option.text = item.nom;
-            select.appendChild(option);
-          });
-        });
-    }
-  }
+<script>
+  //  JS pour nombre de vitesse 
+  document.addEventListener("DOMContentLoaded", function() {
+    var vitesseRange = document.getElementById("nombre_de_vitesse");
+    var vitesseValue = document.getElementById("vitesse_value");
 
+    vitesseRange.addEventListener("input", function() {
+      vitesseValue.textContent = this.value;
+    });
+  });
+</script>
+
+
+<script>
+// Récupère le JSON des associations entre les marques et les modèles
+var modelesData = JSON.parse('{{ modeles_data|escapejs }}');
+
+// Fonction pour changer la liste des modèles en fonction de la marque sélectionnée
+function changeModeleList() {
+  var marqueSelect = document.getElementById("marque_voiture_select");
+  var modeleSelect = document.getElementById("modele_select");
+  var selectedMarqueId = marqueSelect.value;
+  
+  // Supprime les options actuelles du select des modèles
+  modeleSelect.innerHTML = '<option value="">Sélectionner le modèle</option>';
+
+  // Ajoute les options des modèles associés à la marque sélectionnée
+  if (selectedMarqueId && modelesData[selectedMarqueId]) {
+    modelesData[selectedMarqueId].forEach(function(modele) {
+      var option = document.createElement("option");
+      option.text = modele.nom;
+      option.value = modele.id;
+      modeleSelect.appendChild(option);
+    });
+  }
+}
+</script>
+
+<!-- afficher/ masquer des champs  -->
+    <script>
+  
   // Event listener pour filtrer les modèles lorsqu'une marque est sélectionnée
   document.getElementById("marque_voiture_select").addEventListener("change", filterModelsByBrand);
 

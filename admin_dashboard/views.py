@@ -91,8 +91,33 @@ def new_voiture(request):
         'modeles': modeles,
         'modeles_data': json.dumps(modeles_data),
     }
-    return render(request, 'dist/pages/tables/basic-table.html', datas)
+    return render(request, 'dist/pages/tables/Ajout-vehicule.html', datas)
 
 
-
-
+def new_garage(request) : 
+    if request.method == 'POST' : 
+        name = request.POST.get('name')
+        adresse = request.POST.get('adresse')
+        telephone = request.POST.get('telephone')
+        site_web = request.POST.get('site_web')
+        email = request.POST.get('email')
+        horaire = request.POST.get('horaire')
+        service = request.POST.get('service')
+        photo_garage = request.POST.get('photo_garage')
+        logo_garage = request.POST.get('logo_garage')
+        
+        
+        contact = Garage()
+        contact.name = name
+        contact.adresse = adresse
+        contact.telephone = telephone
+        contact.site_web = site_web
+        contact.email = email
+        contact.horaire = horaire
+        contact.service = service
+        contact.photo_garage = photo_garage 
+        contact.logo_garage = logo_garage 
+        contact.save()
+    datas = {
+     }   
+    return render(request, 'dist/pages/tables/Ajout-garage.html', datas)

@@ -5,3 +5,4 @@ from .models import *
 admin.site.register(Modele)
 admin.site.register(MarqueVoiture)
 admin.site.register(Voiture)
+admin.site.register(Garage)

@@ -20,6 +20,8 @@ def new_voiture(request):
     marque_voitures = MarqueVoiture.objects.all()
     modeles = Modele.objects.all()
 
+    #  creation d'un dictionnaire pour stocker les marques de voitures
+    # ce dico sera renvoyer en json pour le filtre des modeles selon lamarque selectionnée
     modeles_data = {}
     for modele in modeles:
         if modele.marque_id not in modeles_data:
@@ -32,7 +34,7 @@ def new_voiture(request):
         immatriculation = request.POST.get("immatriculation")
         numero_serie = request.POST.get("numero_serie")
         couleur_voiture = request.POST.get("couleur_voiture")
-        photo_voiture = request.FILES.get("photo_voiture")
+        photo_voiture = request.FILES.get("photo_voiture/")
         annee_fabrication = request.POST.get("annee_fabrication")
         kilometrage = request.POST.get("kilometrage")
         type_carburant = request.POST.get("type_carburant")
@@ -76,13 +78,57 @@ def new_voiture(request):
 
         add_voiture.save()
         messages.success(request, f'Voiture {add_voiture.modele} a été bien ajoutée!')
-        return redirect('/')
+        return redirect('dashboard')
 
     datas = {
         'marque_voitures': marque_voitures,
         'modeles': modeles,
+        #  envoi du dico en json
         'modeles_data': json.dumps(modeles_data),
     }
-    return render(request, 'dist/pages/tables/basic-table.html', datas)
+    return render(request, 'dist/pages/tables/Ajout-vehicule.html', datas)
 
 
+def new_garage(request) : 
+    if request.method == 'POST' : 
+        name = request.POST.get('name')
+        adresse = request.POST.get('adresse')
+        telephone = request.POST.get('telephone')
+        site_web = request.POST.get('site_web')
+        email = request.POST.get('email')
+        horaire = request.POST.get('horaire')
+        service = request.POST.get('service')
+        photo_garage = request.POST.get('photo_garage')
+        logo_garage = request.POST.get('logo_garage')
+        
+        
+        newGarage = Garage()
+        newGarage.name = name
+        newGarage.adresse = adresse
+        newGarage.telephone = telephone
+        newGarage.site_web = site_web
+        newGarage.email = email
+        newGarage.horaire = horaire
+        newGarage.service = service
+        newGarage.photo_garage = photo_garage 
+        newGarage.logo_garage = logo_garage 
+        newGarage.save()
+    datas = {
+     }   
+    return render(request, 'dist/pages/tables/Ajout-garage.html', datas)
+
+
+def list_garage(request):
+    garages = Garage.objects.all().order_by('-id')
+    datas = {
+        'garages': garages,
+    }
+    return render(request, 'dist/pages/gestion/liste-garage.html', datas)
+
+
+def list_voitures(request):
+    voitures = Voiture.objects.all().order_by('-id')
+    datas = {
+        'voitures': voitures,
+    }
+    return render(request, 'dist/pages/gestion/liste-vehicule.html', datas)

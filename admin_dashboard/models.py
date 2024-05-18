@@ -46,3 +46,24 @@ class Voiture(models.Model):
 
     def __str__(self):
         return f"{self.modele.marque} {self.modele} - {self.annee_fabrication}"
+
+
+
+class Garage(models.Model):
+    name = models.CharField(max_length=100)
+    adresse = models.CharField(max_length=100)
+    telephone = models.CharField(max_length=100)
+    site_web = models.CharField(max_length=100)
+    email = models.CharField(max_length=100)
+    horaire = models.CharField(max_length=100)
+    service = models.CharField(max_length=100)
+    photo_garage = models.ImageField(upload_to='photo_garage/')
+    logo_garage = models.ImageField(upload_to='logo_garare/')
+    
+    status = models.BooleanField(default= True)
+    date_add = models.DateTimeField(auto_now= True)
+    date_update = models.DateTimeField(auto_now= True)
+
+    def __str__(self) :
+        return f"Garage -- {self.name}"
+    

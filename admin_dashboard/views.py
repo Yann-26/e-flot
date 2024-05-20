@@ -16,7 +16,7 @@ from django.core.mail import send_mail
 
 
 # Create your views here.
-def dashboard_user(request, devis_id):
+def dashboard_user(request):
     user = request.user
     type_client = request.GET.get('type', 'particulier')
     voitures = Voiture.objects.all()
@@ -40,11 +40,11 @@ def dashboard_user(request, devis_id):
    
     cars = Voiture.objects.filter(statut='en attente de diagnostic')
     diagnostics = Diagnostic.objects.all()
-    devis = Devis.objects.get(id=devis_id)
+    # devis = Devis.objects.get(id=devis_id)
 
     contexts = {
         'cars': cars,
-        'devis':devis,
+        # 'devis':devis,
         'type_client': type_client,
         'voitures': voitures,
         'garages': garages,

@@ -1,5 +1,7 @@
 from django.conf import settings
 from django.shortcuts import render, redirect, get_object_or_404
+
+from diagnostic.models import Devis
 from .models import envoi_contact
 from admin_dashboard.models import Garage, Voiture
 from django.contrib import messages
@@ -7,8 +9,9 @@ from django.core.mail import send_mail
 
 
 # Create your views here.
-def home(request):
+def home(request,):
     garages = Garage.objects.all().order_by('-id')
+    
     # formulaire d'envoi de contact
     if request.method == "POST":
         nom = request.POST.get('nom')
@@ -25,6 +28,7 @@ def home(request):
 
     datas = {
         "garages":garages,
+       
     }
     return render(request, 'index.html', datas)
 

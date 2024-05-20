@@ -5,7 +5,8 @@ from django.contrib.auth.models import User
 class type_client(models.Model):
     TYPECHOICES = (
         ('Particulier', 'Particulier'),
-        ('Entreprise', 'Entreprise')
+        ('Entreprise', 'Entreprise'),
+        ('Garage', 'Garage'),
     )
     type = models.CharField(choices=TYPECHOICES, max_length=20)
 

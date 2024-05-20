@@ -1,0 +1,95 @@
+{% load static %}
+
+<link
+      rel="stylesheet"
+      href="{% static 'assets/vendors/mdi/css/materialdesignicons.min.css' %}"
+      />
+      <link
+      rel="stylesheet"
+      href="{% static 'assets/vendors/ti-icons/css/themify-icons.css' %}"
+      />
+      <link
+      rel="stylesheet"
+      href="{% static 'assets/vendors/css/vendor.bundle.base.css' %}"
+      />
+      <link
+      rel="stylesheet"
+      href="{% static 'assets/vendors/font-awesome/css/font-awesome.min.css' %}"
+      />
+      
+      <link
+      rel="stylesheet"
+      href="{% static 'assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css' %}"
+      />
+      
+      <link
+      rel="stylesheet"
+      href="{% static 'assets/vendors/ti-icons/css/themify-icons.css' %}"
+      />
+      
+      <link
+      rel="stylesheet"
+      href="{% static 'assets/vendors/font-awesome/css/font-awesome.min.css' %}"
+      />
+
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}" />
+
+<div class="main-panel">
+  <div class="content-wrapper">
+    <div class="page-header">
+      <h3 class="page-title">
+        <span class="page-title-icon bg-gradient-primary text-white me-2">
+          <i class="mdi mdi-home"></i>
+        </span>
+        Dashboard
+      </h3>
+      <nav aria-label="breadcrumb">
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item active" aria-current="page">
+            <span></span>Devis et reçus
+            <i class="mdi mdi-alert-circle-outline icon-sm text-primary align-middle"></i>
+          </li>
+        </ul>
+      </nav>
+    </div>
+    <div class="row">
+      <div class="col-md-5 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Connexion garage</h4>
+
+    <h2>Login Garage</h2>
+    <form method="post">
+        {% csrf_token %}
+
+        <div>
+            <label for="username">Username:</label>
+            <input class="form-control" type="text" name="username" id="username" required>
+        </div>
+        <div>
+            <label for="email">Email:</label>
+            <input class="form-control" type="email" name="email" id="email" >
+        </div>
+        <div>
+            <label for="current_password">Current Password:</label>
+            <input class="form-control" type="password" name="current_password" id="current_password" >
+        </div>
+        <div>
+            <label for="new_password">New Password:</label>
+            <input class="form-control" type="password" name="new_password" id="new_password">
+        </div>
+        <div>
+            <label  for="confirm_new_password">Confirm New Password:</label>
+            <input class="form-control" type="password" name="confirm_new_password" id="confirm_new_password">
+        </div>
+        <button class="btn btn-primary" type="submit">Login</button>
+    </form>
+    {% if messages %}
+        <ul>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+

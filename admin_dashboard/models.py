@@ -2,6 +2,26 @@ from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 
+class Garage(models.Model):
+    name = models.CharField(max_length=100)
+    adresse = models.CharField(max_length=100)
+    telephone = models.CharField(max_length=100)
+    site_web = models.CharField(max_length=100)
+    email = models.CharField(max_length=100)
+    horaire = models.CharField(max_length=100)
+    service = models.CharField(max_length=100)
+    photo_garage = models.ImageField(upload_to='photo_garage/')
+    logo_garage = models.ImageField(upload_to='logo_garare/')
+    
+    
+    status = models.BooleanField(default= True)
+    date_add = models.DateTimeField(auto_now= True)
+    date_update = models.DateTimeField(auto_now= True)
+
+    def __str__(self) :
+        return f"Garage -- {self.name}"
+    
+
 # Create your models here.
 class MarqueVoiture(models.Model):
     marque = models.CharField(max_length=100)
@@ -16,10 +36,14 @@ class Modele(models.Model):
 
     def __str__(self):
         return f"{self.marque} {self.nom}"
+    
+     # standards
+    date_add = models.DateTimeField(auto_now_add=True)
+    date_update = models.DateTimeField(auto_now=True)
+    status = models.BooleanField(default=True)
 
 
 class Voiture(models.Model):
-    
     modele = models.ForeignKey(Modele, on_delete=models.CASCADE)    
     TRANSMISSION_CHOICES = [
         ('Manuelle', 'Manuelle'),
@@ -29,6 +53,10 @@ class Voiture(models.Model):
         ("Gasoil", "Gasoil"),
         ("Super", "Super"),
         ("Essence", "Essence"),
+    ]
+    STATUT_CHOICES = [
+        ('en attente de diagnostic', 'En attente de diagnostic'),
+        ('diagnostiquée', 'Diagnostiquée'),
     ]
     nombre_de_vitesse = models.IntegerField(default=5, validators=[MinValueValidator(1), MaxValueValidator(10)])
     annee_fabrication = models.DateField()
@@ -43,27 +71,13 @@ class Voiture(models.Model):
     codes_erreur = models.TextField(blank=True, null=True)
     photo_voiture = models.ImageField(upload_to="voitures/")
     numero_chassi = models.CharField(max_length=50)
+    statut = models.CharField(max_length=30, choices=STATUT_CHOICES, default='en attente de diagnostic')
+    garage_assigne = models.ForeignKey(Garage, on_delete=models.SET_NULL, null=True, blank=True)
+
+     # standards
+    date_add = models.DateTimeField(auto_now_add=True)
+    date_update = models.DateTimeField(auto_now=True)
+    status = models.BooleanField(default=True)
 
     def __str__(self):
         return f"{self.modele.marque} {self.modele} - {self.annee_fabrication}"
-
-
-
-class Garage(models.Model):
-    name = models.CharField(max_length=100)
-    adresse = models.CharField(max_length=100)
-    telephone = models.CharField(max_length=100)
-    site_web = models.CharField(max_length=100)
-    email = models.CharField(max_length=100)
-    horaire = models.CharField(max_length=100)
-    service = models.CharField(max_length=100)
-    photo_garage = models.ImageField(upload_to='photo_garage/')
-    logo_garage = models.ImageField(upload_to='logo_garare/')
-    
-    status = models.BooleanField(default= True)
-    date_add = models.DateTimeField(auto_now= True)
-    date_update = models.DateTimeField(auto_now= True)
-
-    def __str__(self) :
-        return f"Garage -- {self.name}"
-    

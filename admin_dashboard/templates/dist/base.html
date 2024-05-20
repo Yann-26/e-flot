@@ -1,5 +1,4 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -14,34 +13,34 @@
     <link
       rel="stylesheet"
       href="{% static 'assets/vendors/mdi/css/materialdesignicons.min.css' %}"
-    />
-    <link
+      />
+      <link
       rel="stylesheet"
       href="{% static 'assets/vendors/ti-icons/css/themify-icons.css' %}"
-    />
-    <link
+      />
+      <link
       rel="stylesheet"
       href="{% static 'assets/vendors/css/vendor.bundle.base.css' %}"
-    />
-    <link
+      />
+      <link
       rel="stylesheet"
       href="{% static 'assets/vendors/font-awesome/css/font-awesome.min.css' %}"
-    />
-
-    <link
+      />
+      
+      <link
       rel="stylesheet"
       href="{% static 'assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css' %}"
-    />
-
-    <link
+      />
+      
+      <link
       rel="stylesheet"
       href="{% static 'assets/vendors/ti-icons/css/themify-icons.css' %}"
-    />
-
-    <link
+      />
+      
+      <link
       rel="stylesheet"
       href="{% static 'assets/vendors/font-awesome/css/font-awesome.min.css' %}"
-    />
+      />
 
     <link rel="stylesheet" href="{% static 'assets/css/style.css' %}" />
 
@@ -51,38 +50,39 @@
   <body>
     <div class="container-scroller">
       <nav
-        class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row"
+      class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row"
       >
-        <div
-          class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-start"
-        >
-          <a class="navbar-brand brand-logo" href="index.html"
-            ><img src="{% static 'assets/images/ee copie 2.png' %}" alt="logo"
-          /></a>
-          <a class="navbar-brand brand-logo-mini" href="index.html"
-            ><img src="{% static 'assets/images/logo-mini.svg' %}" alt="logo"
-          /></a>
-        </div>
-        <div class="navbar-menu-wrapper d-flex align-items-stretch">
-          <button
-            class="navbar-toggler navbar-toggler align-self-center"
-            type="button"
-            data-toggle="minimize"
-          >
-            <span class="mdi mdi-menu"></span>
-          </button>
-          <div class="search-field d-none d-md-block">
-            <form class="d-flex align-items-center h-100" action="#">
-              <div class="input-group">
-                <div class="input-group-prepend bg-transparent">
-                  <i class="input-group-text border-0 mdi mdi-magnify"></i>
-                </div>
-                <input
+      <div
+      class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-start"
+      >
+      <a class="navbar-brand brand-logo" href="index.html"
+      ><img src="{% static 'assets/images/ee copie 2.png' %}" alt="logo"
+      /></a>
+      <a class="navbar-brand brand-logo-mini" href="index.html"
+      ><img src="{% static 'assets/images/logo-mini.svg' %}" alt="logo"
+      /></a>
+    
+    </div>
+    <div class="navbar-menu-wrapper d-flex align-items-stretch">
+      <button
+      class="navbar-toggler navbar-toggler align-self-center"
+      type="button"
+      data-toggle="minimize"
+      >
+      <span class="mdi mdi-menu"></span>
+    </button>
+    <div class="search-field d-none d-md-block">
+      <form class="d-flex align-items-center h-100" action="#">
+        <div class="input-group">
+          <div class="input-group-prepend bg-transparent">
+            <i class="input-group-text border-0 mdi mdi-magnify"></i>
+          </div>
+          <input
                   type="text"
                   class="form-control bg-transparent border-0"
                   placeholder="Search projects"
-                />
-              </div>
+                  />
+                </div>
             </form>
           </div>
           <ul class="navbar-nav navbar-nav-right">
@@ -94,16 +94,16 @@
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                <div class="nav-profile-img">
+              <div class="nav-profile-img">
                   <img
-                    src="{% static 'assets/images/faces/face1.jpg' %}"
-                    alt="image"
+                  src="{% static 'assets/images/faces/face1.jpg' %}"
+                  alt="image"
                   />
                   <span class="availability-status online"></span>
                 </div>
                 <div class="nav-profile-text">
                   {% if request.user.is_authenticated %}
-
+                  
                   <p class="mb-1 text-black">{{ request.user.username }}</p>
                   {% endif %}
                 </div>
@@ -319,7 +319,7 @@
                   >
                   
                   {% if user.status == True %}
-                  <span class="text-secondary text-small">En ligne</span>
+                  <span class="text-secondary text-small">Hors ligne</span>
                   {% else %}
                   <span class="text-secondary text-small">En ligne</span>
                   {% endif %}
@@ -336,101 +336,7 @@
                 <i class="mdi mdi-home menu-icon"></i>
               </a>
             </li>
-            <!-- <li class="nav-item">
-              <a
-                class="nav-link"
-                data-bs-toggle="collapse"
-                href="#ui-basic"
-                aria-expanded="false"
-                aria-controls="ui-basic"
-              >
-                <span class="menu-title">Basic UI Elements</span>
-                <i class="menu-arrow"></i>
-                <i class="mdi mdi-crosshairs-gps menu-icon"></i>
-              </a>
-              <div class="collapse" id="ui-basic">
-                <ul class="nav flex-column sub-menu">
-                  <li class="nav-item">
-                    <a class="nav-link" href="pages/ui-features/buttons.html"
-                      >Buttons</a
-                    >
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="pages/ui-features/dropdowns.html"
-                      >Dropdowns</a
-                    >
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="pages/ui-features/typography.html"
-                      >Typography</a
-                    >
-                  </li>
-                </ul>
-              </div>
-            </li>
-            <li class="nav-item">
-              <a
-                class="nav-link"
-                data-bs-toggle="collapse"
-                href="#icons"
-                aria-expanded="false"
-                aria-controls="icons"
-              >
-                <span class="menu-title">Icons</span>
-                <i class="mdi mdi-contacts menu-icon"></i>
-              </a>
-              <div class="collapse" id="icons">
-                <ul class="nav flex-column sub-menu">
-                  <li class="nav-item">
-                    <a class="nav-link" href="pages/icons/font-awesome.html"
-                      >Font Awesome</a
-                    >
-                  </li>
-                </ul>
-              </div>
-            </li>
-            <li class="nav-item">
-              <a
-                class="nav-link"
-                data-bs-toggle="collapse"
-                href="#forms"
-                aria-expanded="false"
-                aria-controls="forms"
-              >
-                <span class="menu-title">Forms</span>
-                <i class="mdi mdi-format-list-bulleted menu-icon"></i>
-              </a>
-              <div class="collapse" id="forms">
-                <ul class="nav flex-column sub-menu">
-                  <li class="nav-item">
-                    <a class="nav-link" href="pages/forms/basic_elements.html"
-                      >Form Elements</a
-                    >
-                  </li>
-                </ul>
-              </div>
-            </li>
-            <li class="nav-item">
-              <a
-                class="nav-link"
-                data-bs-toggle="collapse"
-                href="#charts"
-                aria-expanded="false"
-                aria-controls="charts"
-              >
-                <span class="menu-title">Charts</span>
-                <i class="mdi mdi-chart-bar menu-icon"></i>
-              </a>
-              <div class="collapse" id="charts">
-                <ul class="nav flex-column sub-menu">
-                  <li class="nav-item">
-                    <a class="nav-link" href="pages/charts/chartjs.html"
-                      >ChartJs</a
-                    >
-                  </li>
-                </ul>
-              </div>
-            </li> -->
+           
             <li class="nav-item">
               <a
                 class="nav-link"
@@ -485,11 +391,86 @@
                   </li>
                 </ul>
               </div>
+              </li>
+         
+                <li class="nav-item">
+              <a
+                class="nav-link"
+                data-bs-toggle="collapse"
+                href="#tables"
+                aria-expanded="false"
+                aria-controls="tables"
+              >
+                <span class="menu-title">Devis et diagnostics</span>
+                <i class="mdi mdi-table-large menu-icon"></i>
+              </a>
+              <div class="collapse" id="tables">
+                <ul class="nav flex-column sub-menu">
+                  <li class="nav-item">
+                    <a class="nav-link" href="{% url 'devis' %}"
+                      >Faire un devis</a
+                    >
+                  </li>
+                </ul>
+                <ul class="nav flex-column sub-menu">
+                  <li class="nav-item">
+                   
+                  </li>
+                </ul>
+              </div>
+            </li>
+
+            
+              
            
           </ul>
         </nav>
+
+
         {% block content %} {% endblock content %}
+         <!-- content-wrapper ends -->
+          <!-- partial:partials/_footer.html -->
+          <footer class="footer">
+            <div
+              class="d-sm-flex justify-content-center justify-content-sm-between"
+            >
+              <span
+                class="text-muted text-center text-sm-left d-block d-sm-inline-block"
+                >Copyright © 2023
+                <a href="https://www.bootstrapdash.com/" target="_blank"
+                  >BootstrapDash</a
+                >. All rights reserved.</span
+              >
+              <span
+                class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center"
+                >Hand-crafted & made with
+                <i class="mdi mdi-heart text-danger"></i
+              ></span>
+            </div>
+          </footer>
+          <!-- partial -->
+        </div>
+        <!-- main-panel ends -->
       </div>
+      <!-- page-body-wrapper ends -->
     </div>
+    
+   <script src="{% static 'assets/vendors/js/vendor.bundle.base.js' %}"></script>
+    <!-- endinject -->
+    <!-- Plugin js for this page -->
+    <script src="{% static 'assets/vendors/chart.js/chart.umd.js' %}"></script>
+    <script src="{% static 'assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js' %}"></script>
+    <!-- End plugin js for this page -->
+    <!-- inject:js -->
+    <script src="{% static 'assets/js/off-canvas.js' %}"></script>
+    <script src="{% static 'assets/js/misc.js' %}"></script>
+    <script src="{% static 'assets/js/settings.js' %}"></script>
+    <script src="{% static 'assets/js/todolist.js' %}"></script>
+    <script src="{% static 'assets/js/jquery.cookie.js' %}"></script>
+    <!-- endinject -->
+    <!-- Custom js for this page -->
+    <script src="{% static 'assets/js/dashboard.js' %}"></script>
+    <!-- End custom js for this page -->
+    <!-- endinject -->
   </body>
 </html>

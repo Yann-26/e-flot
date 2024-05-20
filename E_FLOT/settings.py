@@ -17,6 +17,8 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
+
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
@@ -41,6 +43,7 @@ INSTALLED_APPS = [
     'Main.apps.MainConfig',
     'authenticate.apps.AuthenticateConfig',
     'admin_dashboard.apps.AdminDashboardConfig',
+    'diagnostic.apps.DiagnosticConfig',
 
     'crispy_forms',
     'crispy_bootstrap5',

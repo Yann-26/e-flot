@@ -107,7 +107,7 @@
                 <br /><br />
                 {% if request.user.is_authenticated %}
                
-                {% if request.user.is_superuser %}
+                
                 <h2>Consultez votre tableau de bord</h2>
                 <div class="buttons">
                   <div class="main-button">
@@ -116,16 +116,16 @@
                     </a>
                   </div>
                 </div>
-                {% else %}
-                 <h2>Consultez vos devis et diagnostics</h2>
+              
+                 <!-- <h2>Consultez vos devis et diagnostics</h2>
                 <div class="buttons">
                   <div class="main-button">
                     <a href="">
                       <label for="dashbord">Mes devis et diagnostics</label>
                     </a>f
                   </div>
-                </div>
-                {% endif %}
+                </div> -->
+              
                 {% else %}
                 <h2>Choisissez votre profil de connexion :</h2>
 

@@ -10,6 +10,7 @@ from django.http import HttpResponse
 from .models import Devis, DevisField, Diagnostic
 # from weasyprint import HTML
 from django.template.loader import render_to_string
+from django.http import JsonResponse
 
 
 def login_garage(request):
@@ -84,6 +85,7 @@ def create_devis(request):
     return render(request, 'create_devis.html', {'diagnostics': diagnostics})
 
 
+
 def faire_diagnostic(request, voiture_id):
     voiture = get_object_or_404(Voiture, id=voiture_id)
     garage = get_object_or_404(Garage)
@@ -117,6 +119,19 @@ def faire_diagnostic(request, voiture_id):
     }
     return render(request, 'diagnostic.html', context)
 
+
+def get_diagnostic_details(request, diagnostic_id):
+    diagnostic = Diagnostic.objects.get(id=diagnostic_id)
+    data = {
+        'garage_name': diagnostic.garage.name,
+        'garage_email': diagnostic.garage.email,
+        'garage_address': diagnostic.garage.adresse,
+        'garage_telephone': diagnostic.garage.telephone,
+        'garage_business_number': diagnostic.garage.telephone,
+        'garage_logo': diagnostic.garage.logo_garage.url,
+        'date_diagnostic': diagnostic.date_add,
+    }
+    return JsonResponse(data)
 
 
 # @login_required

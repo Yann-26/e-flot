@@ -1,11 +1,12 @@
 from django.conf import settings
 from django.shortcuts import render, redirect, get_object_or_404
-
 from diagnostic.models import Devis
 from .models import envoi_contact
 from admin_dashboard.models import Garage, Voiture
 from django.contrib import messages
 from django.core.mail import send_mail
+from .permissions import superuser_required
+from django.template.loader import render_to_string
 
 
 # Create your views here.
@@ -28,11 +29,15 @@ def home(request,):
 
     datas = {
         "garages":garages,
-       
     }
     return render(request, 'index.html', datas)
 
+def add_car(request):
+    return render(request, 'user_add_car.html')
+
+
 #  assigner une voiture à un garage 
+@superuser_required
 def assign_voiture(request, voiture_id):
     voiture = get_object_or_404(Voiture, pk=voiture_id)
     garages = Garage.objects.all()
@@ -44,23 +49,33 @@ def assign_voiture(request, voiture_id):
         except Garage.DoesNotExist:
             messages.error(request, "Le garage sélectionné n'existe pas.")
             return redirect('assign_voiture', voiture_id=voiture_id)
+    
+     # Vérifiez si la voiture est déjà assignée à ce garage
+        if voiture.garage_assigne == garage:
+            messages.error(request, f"La voiture {voiture.modele} est déjà assignée au garage {garage.name}.")
+            return redirect('assign_voiture', voiture_id=voiture_id)
 
-        voiture.garage_assigné = garage
+        voiture.garage_assigne = garage
         voiture.statut = 'en attente de diagnostic'
         voiture.save()
 
+        contexts = {
+            'voiture': voiture,
+            'garage': garage
+        }
         # Envoyer un email au garage
         subject = 'Nouvelle voiture assignée pour diagnostic'
-        message = f'Bonjour {garage.name},\n\nUne nouvelle voiture a été assignée à votre garage pour diagnostic.\n\nImmatriculation: {voiture.immatriculation}\nModèle: {voiture.modele.nom}\n\nMerci.'
+        message = f'Une nouvelle voiture a été assignée à votre garage pour diagnostic.'
         from_email = settings.EMAIL_HOST_USER
         recipient_list = [garage.email]
-        send_mail(subject, message, from_email, recipient_list, fail_silently=False)
+        notice_html = render_to_string('emailAssign.html', contexts)
+        send_mail(subject, message, from_email, recipient_list, fail_silently=False, html_message=notice_html)
 
         messages.success(request, f'Voiture {voiture.modele} a été assignée au garage {garage.name}.')
         return redirect('dashboard')
-
-    context = {
+    
+    contexts = {
         'voiture': voiture,
         'garages': garages
     }
-    return render(request, 'assign_voiture.html', context)
+    return render(request, 'assign_voiture.html', contexts)

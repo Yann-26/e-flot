@@ -147,3 +147,24 @@ EMAIL_HOST_PASSWORD = 'yhbejtayaeaowdld'
 FROM_EMAIL = 'yannassiri26@gmail.com' 
 
 
+AUTH_USER_MODEL = 'Main.User'
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+
+# configuration des loggings 
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'DEBUG',
+    },
+}

@@ -44,6 +44,15 @@
           <p>
             <strong>Historique de maintenance:</strong> {{voitures.historique_maintenance}}
           </p>
+          <p> {% if messages %}
+  <div>
+    {% for message in messages %}
+    <ul>
+      <li>{{message}}</li>
+    </ul>
+    {% endfor %}
+  </div>
+  {% endif %}</p>
          
         </div>
       </div>

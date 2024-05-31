@@ -1,21 +1,23 @@
 from django.conf import settings
-from django.http import JsonResponse
+from django.http import HttpResponseBadRequest, JsonResponse
 from django.shortcuts import render, redirect,  get_object_or_404
 from django.urls import reverse
-
 from diagnostic.models import *
+from Main.permissions import *
 from .models import*
 from authenticate.models import type_client
 from django.contrib import messages
 import json
 from django.contrib.auth import get_user_model
-from django.contrib.auth.models import User
+from Main.models import User
 from django.contrib.auth.hashers import make_password
 from django.core.mail import send_mail
 
 
+User = get_user_model()
 
 # Create your views here.
+@superuser_required
 def dashboard_user(request):
     user = request.user
     type_client = request.GET.get('type', 'particulier')
@@ -59,6 +61,7 @@ def dashboard_user(request):
 def new_voiture(request):
     marque_voitures = MarqueVoiture.objects.all()
     modeles = Modele.objects.all()
+
 
     #  creation d'un dictionnaire pour stocker les marques de voitures
     # ce dico sera renvoyer en json pour le filtre des modeles selon lamarque selectionnée
@@ -129,51 +132,68 @@ def new_voiture(request):
     return render(request, 'dist/pages/tables/Ajout-vehicule.html', datas)
 
 
-#  ajout de garage
+@superuser_required
 def new_garage(request):
     if request.method == 'POST':
-        name = request.POST.get('name')
+        name = request.POST.get('name').strip()
         adresse = request.POST.get('adresse')
         telephone = request.POST.get('telephone')
         site_web = request.POST.get('site_web')
-        email = request.POST.get('email')
+        email = request.POST.get('email').strip()
         horaire = request.POST.get('horaire')
         service = request.POST.get('service')
         photo_garage = request.POST.get('photo_garage')
         logo_garage = request.POST.get('logo_garage')
 
-        # Find the "Garage" type client or create it if it doesn't exist
-        garage_type, created = type_client.objects.get_or_create(type='Garage')
-
-        newGarage = Garage()
-        newGarage.name = name
-        newGarage.adresse = adresse
-        newGarage.telephone = telephone
-        newGarage.site_web = site_web
-        newGarage.email = email
-        newGarage.horaire = horaire
-        newGarage.service = service
-        newGarage.photo_garage = photo_garage
-        newGarage.logo_garage = logo_garage
-        newGarage.type_client = garage_type
-        newGarage.save()
-
-        # Creer un compte pour le garage
+        # Valider les champs obligatoires
+        if not name or not email:
+            return HttpResponseBadRequest("Name and email are required.")
+        # Créer un compte utilisateur pour le garage
         username = name
         password = User.objects.make_random_password()
-        user = User.objects.create_user(username, newGarage.email, password)
+        user = User.objects.create_user(username, email, password)
+        user.save()
 
-        # envoyer un email au propriétaire au garage avec son mot de passe 
+        # Créer le garage
+        new_garage = Garage.objects.create(
+            name=name,
+            adresse=adresse,
+            telephone=telephone,
+            site_web=site_web,
+            email=email,
+            horaire=horaire,
+            service=service,
+            photo_garage=photo_garage,
+            logo_garage=logo_garage,
+            user=user,
+        )
+        new_garage.save()
+
+
+        # Envoyer un e-mail avec les informations de connexion au garage
         subject = 'Your Garage Account Password'
-        login_url = request.build_absolute_uri(reverse('login_garage'))
-        message = f'Dear {newGarage.name},\n\nYour garage account has been created successfully. Your username is {username} and your password is {password}. You can log in to your account at {login_url}.'
+        login_url = request.build_absolute_uri(reverse('activate_garage', args=[user.id]))
+        message = f'Dear {name},\n\nYour garage account has been created successfully. Your username is {username} and your password is {password}. You can log in to your account at {login_url}.'
         from_email = settings.EMAIL_HOST_USER
-        recipient_list = [newGarage.email]
+        recipient_list = [email]
         send_mail(subject, message, from_email, recipient_list, fail_silently=False)
 
-    datas = {}
-    return render(request, 'dist/pages/tables/Ajout-garage.html', datas)
+        return redirect('garage_page')  # Rediriger vers une page appropriée après la création
 
+    return render(request, 'dist/pages/tables/Ajout-garage.html')
+
+
+def activate_garage_role(request, user_id):
+    if request.method == 'GET':
+        try:
+            user = get_user_model().objects.get(id=user_id)
+            user.role = 'garage'
+            user.save()
+            return redirect('login_garage')  
+        except get_user_model().DoesNotExist:
+            return HttpResponseBadRequest("Invalid user ID")
+    else:
+        return HttpResponseBadRequest("Method not allowed")
 
 
 #  liste des garages
@@ -185,12 +205,14 @@ def list_garage(request):
     return render(request, 'dist/pages/gestion/liste-garage.html', datas)
 
 
+
 def list_voitures(request):
     voitures = Voiture.objects.all().order_by('-id')
     datas = {
         'voitures': voitures,
     }
     return render(request, 'dist/pages/gestion/liste-vehicule.html', datas)
+
 
 
 def detail_garages(request, garage_id):

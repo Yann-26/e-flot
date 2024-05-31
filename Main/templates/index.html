@@ -47,10 +47,12 @@
                 style="width: 200px; height: auto;">
 
             </a>
+            
             <!-- ***** Logo End ***** -->
-
+            
             <!-- ***** Menu Start ***** -->
             <ul class="nav">
+              <li class="scroll-to-section"><a href="">Bienvenu {{request.user.username}}</a></li>
               <li class="scroll-to-section">
                 <a href="#top" class="active">Acceuil</a>
               </li>
@@ -88,6 +90,15 @@
     </div>
   </header>
   <!-- ***** Header Area End ***** -->
+   {% if messages %}
+  <div>
+    {% for message in messages %}
+    <ul>
+      <li>{{message}}</li>
+    </ul>
+    {% endfor %}
+  </div>
+  {% endif %}
 
   <div class="main-banner" id="top">
     <div class="container">
@@ -106,16 +117,32 @@
                 </p>
                 <br /><br />
                 {% if request.user.is_authenticated %}
-               
-                
-                <h2>Consultez votre tableau de bord</h2>
+                {% if request.user.is_superuser %}
+                  <h2>Consulter vos  données</h2>
                 <div class="buttons">
                   <div class="main-button">
                     <a href="{% url 'dashboard' %}">
+                      
                       <label for="dashbord">Tableau de bord</label>
                     </a>
                   </div>
                 </div>
+                {% else %}
+                {% if request.user.role == 'normal' %}
+               
+                <h2>Ajouter une voiture pour diagnostic</h2>
+                <div class="buttons">
+                  <div class="main-button">
+                    <a href="{% url '_add_car' %}">
+                      
+                      <label for="dashbord">Ajouter une voiture</label>
+                    </a>
+                  </div>
+                </div>
+                {% endif %}
+                
+                {% endif %}
+              
               
                  <!-- <h2>Consultez vos devis et diagnostics</h2>
                 <div class="buttons">

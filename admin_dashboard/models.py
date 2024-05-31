@@ -1,8 +1,11 @@
 from django.db import models
+from django.conf import settings
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 
+# garage
 class Garage(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     adresse = models.CharField(max_length=100)
     telephone = models.CharField(max_length=100)
@@ -12,17 +15,15 @@ class Garage(models.Model):
     service = models.CharField(max_length=100)
     photo_garage = models.ImageField(upload_to='photo_garage/')
     logo_garage = models.ImageField(upload_to='logo_garare/')
-    
-    
     status = models.BooleanField(default= True)
     date_add = models.DateTimeField(auto_now= True)
     date_update = models.DateTimeField(auto_now= True)
 
     def __str__(self) :
-        return f"Garage -- {self.name}"
+        return f"Nom du garage: {self.name}"
     
 
-# Create your models here.
+# marque de  la voiture
 class MarqueVoiture(models.Model):
     marque = models.CharField(max_length=100)
 
@@ -30,6 +31,7 @@ class MarqueVoiture(models.Model):
         return self.marque
 
 
+# Modele de voiture
 class Modele(models.Model):
     nom = models.CharField(max_length=100)
     marque = models.ForeignKey(MarqueVoiture, on_delete=models.CASCADE, related_name='modeles')
@@ -43,6 +45,7 @@ class Modele(models.Model):
     status = models.BooleanField(default=True)
 
 
+# ajout de voiture 
 class Voiture(models.Model):
     modele = models.ForeignKey(Modele, on_delete=models.CASCADE)    
     TRANSMISSION_CHOICES = [
@@ -56,7 +59,7 @@ class Voiture(models.Model):
     ]
     STATUT_CHOICES = [
         ('en attente de diagnostic', 'En attente de diagnostic'),
-        ('diagnostiquée', 'Diagnostiquée'),
+        ('diagnostiquée', 'Diagnostiquee'),
     ]
     nombre_de_vitesse = models.IntegerField(default=5, validators=[MinValueValidator(1), MaxValueValidator(10)])
     annee_fabrication = models.DateField()

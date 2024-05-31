@@ -14,6 +14,15 @@
                 </span>
                 Dashboard
               </h3>
+               {% if messages %}
+  <div>
+    {% for message in messages %}
+    <ul>
+      <li>{{message}}</li>
+    </ul>
+    {% endfor %}
+  </div>
+  {% endif %}
               {% if user_type == "Garage" %}
                  <nav aria-label="breadcrumb">
                 <ul class="breadcrumb">

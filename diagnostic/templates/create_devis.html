@@ -25,6 +25,15 @@
           <div class="card-body">
             <h4 class="card-title">Faire un devis</h4>
  <form method="post" class="forms-sample">
+
+      {% if messages %}
+        <ul>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
   {% csrf_token %}
   <div class="form-group row">
     <label class="col-sm-3 col-form-label">Titre du devis :</label>
@@ -54,7 +63,6 @@
   <button type="button" id="add-field-btn" class="btn btn-gradient-secondary me-2">Ajouter un champ</button>
   <button class="btn btn-gradient-primary me-2" type="submit">Créer le devis</button>
 </form>
-
           </div>
         </div>
       </div>

@@ -95,10 +95,20 @@
                 aria-expanded="false"
               >
               <div class="nav-profile-img">
+                {% if request.user.role == "garage" %}
+                {% for garage in garages %}
+                <img
+                  src="{{garage.logo_garage.url}}"
+                  alt="image"
+                  />
+                  {% endfor %}
+                  {% else %}
                   <img
                   src="{% static 'assets/images/faces/face1.jpg' %}"
                   alt="image"
                   />
+                  {% endif %}
+
                   <span class="availability-status online"></span>
                 </div>
                 <div class="nav-profile-text">
@@ -336,7 +346,7 @@
                 <i class="mdi mdi-home menu-icon"></i>
               </a>
             </li>
-           
+           {% if request.user.is_superuser %}
             <li class="nav-item">
               <a
                 class="nav-link"
@@ -365,6 +375,8 @@
                 </ul>
               </div>
             </li>
+            {% endif %}
+           {% if request.user.is_superuser %}
             <li class="nav-item">
               <a
                 class="nav-link"
@@ -392,6 +404,35 @@
                 </ul>
               </div>
               </li>
+              {% else %}
+              <li class="nav-item">
+              <a
+                class="nav-link"
+                data-bs-toggle="collapse"
+                href="#auth"
+                aria-expanded="false"
+                aria-controls="auth"
+              >
+                <span class="menu-title">Listes Devis et diagnostics</span>
+                <i class="menu-arrow"></i>
+                <i class="mdi mdi-lock menu-icon"></i>
+              </a>
+              <div class="collapse" id="auth">
+                <ul class="nav flex-column sub-menu">
+                  <li class="nav-item">
+                    <a class="nav-link" href="{% url 'liste_garage' %}">
+                      Liste de diagnostics
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{% url 'liste_voiture' %}">
+                      Liste des devis
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              </li>
+              {% endif %}
          
                 <li class="nav-item">
               <a
@@ -401,7 +442,7 @@
                 aria-expanded="false"
                 aria-controls="tables"
               >
-                <span class="menu-title">Devis et diagnostics</span>
+                <span class="menu-title">Faire Devis et diagnostics</span>
                 <i class="mdi mdi-table-large menu-icon"></i>
               </a>
               <div class="collapse" id="tables">

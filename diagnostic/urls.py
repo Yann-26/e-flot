@@ -3,6 +3,8 @@ from .views import *
 
 urlpatterns = [
     path('Connexion/garage/', login_garage, name='login_garage'),
+    path('Connexion/garage/forget_apssword/', forgot_password, name='forgot_password'),
+    path('espace/garage/', garage_page, name='garage_page'),
     path('faire/devis/', create_devis, name='devis'),
     path('display-recu/<int:devis_id>/', display_recu, name='display_recu'),
     path('submit/diagnostic/<int:voiture_id>/', faire_diagnostic, name='diagnostic'),

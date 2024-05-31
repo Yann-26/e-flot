@@ -120,7 +120,9 @@ def create_devis(request):
         title = request.POST.get('title')
         commentaire = request.POST.get('commentaire')
         diagnostic_id = request.POST.get('diagnostic')
-        diagnostic = Diagnostic.objects.get(pk=diagnostic_id)
+        
+        # Récupérer l'instance unique de Diagnostic
+        diagnostic = get_object_or_404(Diagnostic, pk=diagnostic_id, garage=request.user.garage)
         
         devis = Devis(title=title, diagnostic=diagnostic, commentaire=commentaire)
         devis.save()
@@ -142,8 +144,24 @@ def create_devis(request):
 
         return redirect('/faire/devis/', devis_id=devis.id)
 
-    diagnostics = Diagnostic.objects.all()
+    diagnostics = Diagnostic.objects.filter(garage=request.user.garage)
     return render(request, 'create_devis.html', {'diagnostics': diagnostics})
+
+
+
+@garage_required
+def get_diagnostic_details(request, diagnostic_id):
+    diagnostic = Diagnostic.objects.get(id=diagnostic_id)
+    data = {
+        'garage_name': diagnostic.garage.name,
+        'garage_email': diagnostic.garage.email,
+        'garage_address': diagnostic.garage.adresse,
+        'garage_telephone': diagnostic.garage.telephone,
+        'garage_business_number': diagnostic.garage.telephone,
+        'garage_logo': diagnostic.garage.logo_garage.url,
+        'date_diagnostic': diagnostic.date_add,
+    }
+    return JsonResponse(data)
 
 
 @garage_required
@@ -182,19 +200,6 @@ def faire_diagnostic(request, voiture_id):
     }
     return render(request, 'diagnostic.html', context)
 
-@garage_required
-def get_diagnostic_details(request, diagnostic_id):
-    diagnostic = Diagnostic.objects.get(id=diagnostic_id)
-    data = {
-        'garage_name': diagnostic.garage.name,
-        'garage_email': diagnostic.garage.email,
-        'garage_address': diagnostic.garage.adresse,
-        'garage_telephone': diagnostic.garage.telephone,
-        'garage_business_number': diagnostic.garage.telephone,
-        'garage_logo': diagnostic.garage.logo_garage.url,
-        'date_diagnostic': diagnostic.date_add,
-    }
-    return JsonResponse(data)
 
 @garage_required
 def display_recu(request, devis_id):

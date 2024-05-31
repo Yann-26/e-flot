@@ -11,6 +11,7 @@ def garage_required(function):
             return render(request, 'access_denied.html', status=403)
     return wrap
 
+
 def superuser_required(function):
     @wraps(function)
     def wrap(request, *args, **kwargs):

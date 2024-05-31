@@ -197,6 +197,7 @@ def activate_garage_role(request, user_id):
 
 
 #  liste des garages
+@superuser_required
 def list_garage(request):
     garages = Garage.objects.all().order_by('-id')
     datas = {
@@ -205,7 +206,7 @@ def list_garage(request):
     return render(request, 'dist/pages/gestion/liste-garage.html', datas)
 
 
-
+@superuser_required
 def list_voitures(request):
     voitures = Voiture.objects.all().order_by('-id')
     datas = {

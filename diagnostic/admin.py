@@ -12,4 +12,4 @@ class DevisAdmin(admin.ModelAdmin):
 # Enregistrement des modèles avec les classes d'administration personnalisées
 admin.site.register(Devis, DevisAdmin)
 admin.site.register(Diagnostic)
-# admin.site.register(DevisField)
+admin.site.register(DevisField) 

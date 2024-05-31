@@ -60,6 +60,13 @@
       </div>
     </div>
   </fieldset>
+  <div class="form-group row">
+    <label class="col-sm-3 col-form-label">Commentaire :</label>
+    <div class="col-sm-9">
+        <input class="form-control" type="text" id="commentaire" name="commentaire" required oninput="updateComment()" />
+      </div>
+   
+  </div>
   <button type="button" id="add-field-btn" class="btn btn-gradient-secondary me-2">Ajouter un champ</button>
   <button class="btn btn-gradient-primary me-2" type="submit">Créer le devis</button>
 </form>
@@ -138,9 +145,9 @@
     </table>
   </article>
   <aside>
-    <h1><span>Additional Notes</span></h1>
+    <h1><span>Notes</span></h1>
     <div>
-      <p>We offer limited 10 days refund policy and 30 days workmanship warranty on all of our services. For more details, please read our refund policy below.</p>
+      <p id="recu-commentaire" style="align-items: center;">Ajouter un commentaire</p>
     </div>
   </aside>
 </div>
@@ -196,6 +203,7 @@
       <tr class="field" id="recu-field-${fieldCount}">
         <td><span>${fieldCount}</span></td>
         <td><span id="recu-label-${fieldCount}"></span></td>
+        <td><span id="recu-type-${fieldCount}"></span></td>
         <td><span id="recu-value-${fieldCount}"></span></td>
         <td><span id="recu-prix-${fieldCount}"></span></td>
       </tr>`;
@@ -206,19 +214,25 @@
     const title = document.getElementById("title").value;
     document.getElementById("recu-title").textContent = title;
   }
-
+function updateComment(){
+  const commentaire = document.getElementById('commentaire').value;
+  document.getElementById('recu-commentaire').textContent = commentaire;
+}
   function updateField(fieldId) {
     const label = document.querySelector(`input[name="field_label_${fieldId}"]`).value;
+    const type = document.querySelector(`select[name="field_type_${fieldId}"]`).value;
     const value = document.querySelector(`input[name="field_value_${fieldId}"]`).value;
     const prix = document.querySelector(`input[name="field_prix_${fieldId}"]`).value;
 
     document.getElementById(`recu-label-${fieldId}`).textContent = label;
+    document.getElementById(`recu-type-${fieldId}`).textContent = type;
     document.getElementById(`recu-value-${fieldId}`).textContent = value;
     document.getElementById(`recu-prix-${fieldId}`).textContent = prix;
 
     // Recalculate total prix
     calculateTotalPrix();
-  }
+}
+
 
   function calculateTotalPrix() {
     total_prix = 0;
